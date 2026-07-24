@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untukmu...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Audio Placeholder -->
+    <!-- <audio id="bg-music" src="assets/piano.mp3" loop></audio> -->
+
+    <!-- Dynamic Backgrounds -->
+    <div id="bg-afternoon" class="bg-layer active"></div>
+    <div id="bg-sunset" class="bg-layer"></div>
+    
+    <!-- Canvas for Fireflies -->
+    <div id="fireflies-canvas"></div>
+    
+    <!-- Foreground Decorations (Generated via Code) -->
+    <div id="branch-left" class="code-decoration swaying-branch-left"></div>
+    <div id="branch-right" class="code-decoration swaying-branch-right"></div>
+    <div id="animated-garden"></div>
+    
+    <!-- Canvas for falling sakura petals -->
+    <canvas id="sakura-canvas"></canvas>
+
+    <div id="white-overlay"></div>
+
+    <!-- Main Container -->
+    <main id="app-container">
+        
+        <!-- Opening Scene: The Envelope -->
+        <section id="scene-opening" class="scene active">
+            <div class="envelope-wrapper" id="envelope-wrapper">
+                <div class="envelope" id="envelope">
+                    <div class="env-back"></div>
+                    <div class="env-letter" id="env-letter">
+                        <div class="letter-content">
+                            <p>To You...</p>
+                        </div>
+                    </div>
+                    <div class="env-left"></div>
+                    <div class="env-right"></div>
+                    <div class="env-bottom"></div>
+                    <div class="env-top" id="env-top"></div>
+                    <div class="env-seal" id="env-seal">
+                        <div class="env-seal-center"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="start-hint">Tap amplop untuk membuka</div>
+        </section>
+
+        <!-- Story Scene -->
+        <section id="scene-story" class="scene">
+            <div class="paper-container">
+                
+                <!-- Page 1 -->
+                <div id="page-1" class="page active">
+                    <div class="letter-content">
+                        <p class="handwriting">Hai Lila Sayangku...</p>
+                        <p class="handwriting">Aku membuat ini karena aku tidak mau kamu pergi dari ku.</p>
+                        <p class="handwriting">Maafkan aku ucap hatiku yang terdalam...</p>
+                    </div>
+                    <button class="btn-next" onclick="nextPage(2)">Next ➜</button>
+                </div>
+
+                <!-- Page 2 -->
+                <div id="page-2" class="page">
+                    <div class="letter-content sequence-fade">
+                        <p class="handwriting fade-item">Aku tidak bermaksud membuatmu marah waktu itu.</p>
+                        <p class="handwriting fade-item">Ini hanya kesalah pahaman saja sayangku, mungkin dari sebelum nya aku sudah berbuat salah karna ngga pegang omonganku. semalem aku bermaksud bertanya, cemburu sedikit tapi lebih ke iri. aku tidak mau berpisah sama kamu......</p>
+                        <p class="handwriting fade-item">Tolong pertahanin ini yak sayangku, jangan pergi...</p>
+                    </div>
+                    <button class="btn-next" onclick="nextPage(3)">Next ➜</button>
+                </div>
+
+                <!-- Page 3 -->
+                <div id="page-3" class="page">
+                    <div class="letter-content">
+                        <p class="handwriting">Aku berjanji...</p>
+                        <p class="handwriting">Akan memperbaik semuanya. termasuk kepribadianku.</p>
+                        <p class="handwriting">Aku akan mecoba tidak membuatmu marah dan emosi. tidak mematikan api excied mu.</p>
+                        <p class="handwriting">Dan aku akan selalu patuh padamu.</p>
+                    </div>
+                    <button class="btn-next" onclick="nextPage(4)">Next ➜</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Ending Scene -->
+        <section id="scene-ending" class="scene">
+            <div class="ending-container">
+                <h1 class="ending-title">Dibalas yak sayangku.</h1>
+                
+                <div class="voice-note-wrapper" style="margin: 30px 0;">
+                    <p style="color: white; font-family: var(--font-hand); font-size: 20px; margin-bottom: 10px;">(maaf jika tidak terdengar jelas)</p>
+                    <!-- Ganti 'voice_note.mp3' dengan file suara asli Anda nantinya -->
+                    <audio controls style="border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                        <source src="voice_note.mp3" type="audio/mpeg">
+                        Browser Anda tidak mendukung elemen audio.
+                    </audio>
+                </div>
+
+                <p class="ending-text">
+                    Jangan pergi ya sayangku<br>
+                    aku berjanji akan berubah<br><br>
+                    <strong>Maafkan aku, aku mencintaimu</strong>
+                </p>
+                <div class="pulse-heart">❤️</div>
+
+                <div class="button-group" id="ending-buttons">
+                    <button class="btn-choice btn-forgive" onclick="chooseEnding('forgive')">🌸 Dimaafin</button>
+                    <button class="btn-choice btn-wait" id="btn-no">🌸 Tidak dimaafin</button>
+                </div>
+                <div id="ending-message" class="ending-message hidden">
+                    <!-- Dynamic message inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- White Flash Transition Overlay -->
+        <div id="flash-overlay"></div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
