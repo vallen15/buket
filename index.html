@@ -2,133 +2,1572 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untukmu...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#ebf5fa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>UNTUK MU SAYANGKU</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           RESET & CSS VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-center: #ffffff;
+            --bg-mid: #ebf5fa;
+            --bg-outer: #d5e7f2;
+            --navy-dark: #0c2340;
+            --navy-mid: #15365c;
+            --navy-sub: #1b4066;
+            --anti-gravity-duration: 6.2s;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            overscroll-behavior: none;
+            background: radial-gradient(circle at 50% 38%, var(--bg-center) 0%, var(--bg-mid) 54%, var(--bg-outer) 100%);
+            color: var(--navy-dark);
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ==========================================================================
+           MAIN POSTER CONTAINER (1024x559 aspect ratio)
+           ========================================================================== */
+        .stage-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+        }
+
+        /* REPLAY INTRO FLOATING BUTTON */
+        .replay-btn {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.5rem;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.15rem;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(223, 182, 88, 0.45);
+            border-radius: 999px;
+            color: var(--navy-dark);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(12, 35, 64, 0.08), 0 1px 3px rgba(223, 182, 88, 0.2);
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            outline: none;
+        }
+
+        .replay-btn:hover {
+            background: #ffffff;
+            border-color: #dfb658;
+            color: #b57a1e;
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 26px rgba(223, 182, 88, 0.38), 0 2px 6px rgba(12, 35, 64, 0.1);
+        }
+
+        .replay-btn:active {
+            transform: translateY(0px) scale(0.97);
+        }
+
+        .replay-icon {
+            transition: transform 0.4s ease;
+        }
+
+        .replay-btn:hover .replay-icon {
+            transform: rotate(-180deg);
+        }
+
+        /* MOBILE RESPONSIVE TWEAKS FOR ANDROID & IPHONE */
+        @media (max-width: 650px), (max-aspect-ratio: 1/1) {
+            .replay-btn {
+                top: max(0.85rem, env(safe-area-inset-top, 0.85rem));
+                right: max(0.85rem, env(safe-area-inset-right, 0.85rem));
+                padding: 0.45rem 0.85rem;
+                font-size: 0.74rem;
+                gap: 0.35rem;
+            }
+            .replay-btn .btn-text-desktop {
+                display: none;
+            }
+            .replay-btn .btn-text-mobile {
+                display: inline;
+            }
+        }
+
+        @media (min-width: 651px) and (min-aspect-ratio: 1/1) {
+            .replay-btn .btn-text-mobile {
+                display: none;
+            }
+        }
+
+        /* SVG ARTWORK WRAPPER */
+        .artwork-wrapper {
+            position: relative;
+            width: 96vw;
+            max-width: 1024px;
+            max-height: 92vh;
+            aspect-ratio: 1024 / 559;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            transform-origin: 50% 50%;
+            will-change: transform;
+            transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        .main-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            overflow: visible;
+        }
+
+        /* ==========================================================================
+           CINEMATIC MULTI-STAGE INTRO ANIMATION SUITE
+           ========================================================================== */
+
+        /* 1. BLUEPRINT GRID TRACING (Genesis Phase) */
+        .play-intro #blueprintGrid {
+            animation: introGridFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes introGridFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            100% {
+                opacity: 0.88;
+                transform: scale(1);
+            }
+        }
+
+        .play-intro .blueprint-line {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: traceBlueprintLine 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes traceBlueprintLine {
+            0% { stroke-dashoffset: 600; opacity: 0; }
+            30% { opacity: 1; }
+            100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+
+        .play-intro .blueprint-marker {
+            opacity: 0;
+            transform-origin: center;
+            animation: popBlueprintMarker 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+        }
+
+        @keyframes popBlueprintMarker {
+            0% { opacity: 0; transform: scale(0); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* 2. STEMS GENERATIVE GROWTH */
+        .play-intro #bouquetStems {
+            transform-origin: 508px 285px;
+            animation: growBouquetStems 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+
+        @keyframes growBouquetStems {
+            0% {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+        }
+
+        /* 3. LEAF UNFURLING */
+        .play-intro .leaf-unfurl-1 {
+            animation: leafUnfurl 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s both;
+        }
+        .play-intro .leaf-unfurl-2 {
+            animation: leafUnfurl 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s both;
+        }
+        .play-intro .leaf-unfurl-3 {
+            animation: leafUnfurl 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.45s both;
+        }
+
+        @keyframes leafUnfurl {
+            0% {
+                transform: scale(0) rotate(-22deg);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.16) rotate(4deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* 4. CHALICE WRAPPER ORIGAMI UNFOLDING */
+        .play-intro #wrapperBack {
+            transform-origin: 508px 368px;
+            animation: unfoldBackWrapper 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) 0.2s both;
+        }
+
+        @keyframes unfoldBackWrapper {
+            0% {
+                transform: scale(0.7, 0.4) translateY(24px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1, 1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .play-intro #wrapperFrontCone {
+            transform-origin: 508px 368px;
+            animation: unfoldFrontWrapper 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) 0.3s both;
+        }
+
+        @keyframes unfoldFrontWrapper {
+            0% {
+                transform: scale(0.75, 0.5) translateY(20px);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.04, 1.02) translateY(-2px);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1, 1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 5. STAGGERED ROSE BLOOMS (ELASTIC SPRING & PETAL ROTATION) */
+        .play-intro .bloom-rose-top {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.20s both;
+        }
+        .play-intro .bloom-rose-ul {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.26s both;
+        }
+        .play-intro .bloom-rose-ur {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.32s both;
+        }
+        .play-intro .bloom-rose-sl {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.38s both;
+        }
+        .play-intro .bloom-rose-sr {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.44s both;
+        }
+        .play-intro .bloom-rose-ll {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.50s both;
+        }
+        .play-intro .bloom-rose-lr {
+            animation: bloomRoseSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.56s both;
+        }
+        /* Foremost Center Master Rose */
+        .play-intro .bloom-rose-center {
+            animation: bloomRoseCenterMaster 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.64s both;
+        }
+
+        @keyframes bloomRoseSpring {
+            0% {
+                transform: scale(0) rotate(-35deg);
+                opacity: 0;
+            }
+            65% {
+                transform: scale(1.15) rotate(6deg);
+                opacity: 1;
+            }
+            85% {
+                transform: scale(0.96) rotate(-2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bloomRoseCenterMaster {
+            0% {
+                transform: scale(0) rotate(-55deg);
+                opacity: 0;
+                filter: drop-shadow(0 0 0 rgba(223, 67, 116, 0));
+            }
+            60% {
+                transform: scale(1.22) rotate(8deg);
+                opacity: 1;
+                filter: drop-shadow(0 0 24px rgba(223, 67, 116, 0.65));
+            }
+            82% {
+                transform: scale(0.95) rotate(-3deg);
+                filter: drop-shadow(0 0 10px rgba(223, 67, 116, 0.25));
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+                filter: drop-shadow(0 0 0 rgba(223, 67, 116, 0));
+            }
+        }
+
+        /* 6. LUXURY RIBBON BOW & RUBY GEM POP */
+        .play-intro #ribbonBow {
+            transform-origin: 508px 376px;
+            animation: popRibbonBow 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.72s both;
+        }
+
+        @keyframes popRibbonBow {
+            0% {
+                transform: scale(0) translateY(12px);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.24) translateY(-3px);
+                opacity: 1;
+            }
+            82% {
+                transform: scale(0.94) translateY(1px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 7. GROUND SHADOW BREATHING ENTRANCE */
+        .play-intro .ground-shadow {
+            animation: shadowIntroFade 0.6s ease-out 0.4s both, pulseShadow var(--anti-gravity-duration) cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite 1.4s;
+        }
+
+        @keyframes shadowIntroFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.2);
+            }
+            100% {
+                opacity: 0.25;
+                transform: scale(1);
+            }
+        }
+
+        /* 8. TYPOGRAPHY KINETIC REVEAL */
+        .play-intro #textLine1 {
+            animation: revealTypoLine1 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.78s both;
+        }
+
+        @keyframes revealTypoLine1 {
+            0% {
+                opacity: 0;
+                transform: translateY(16px) scale(0.96);
+                letter-spacing: 1px;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .play-intro #textLine2 {
+            animation: revealTypoLine2 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.88s both;
+        }
+
+        @keyframes revealTypoLine2 {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+                letter-spacing: 4px;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                letter-spacing: 9px;
+            }
+        }
+
+        /* ==========================================================================
+           CONTINUOUS ANTI-GRAVITY FLOATING (Begins after intro handoff)
+           ========================================================================== */
+        .anti-gravity-float {
+            transform-origin: 508px 270px;
+            animation: floatBouquet var(--anti-gravity-duration) cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            animation-delay: 2.5s;
+            will-change: transform;
+            cursor: pointer;
+        }
+
+        @keyframes floatBouquet {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-9px) rotate(-0.5deg);
+            }
+            66% {
+                transform: translateY(-16px) rotate(0.45deg);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        /* GROUND SHADOW PULSING IN INVERSE TO HEIGHT */
+        .ground-shadow {
+            transform-origin: 508px 460px;
+            will-change: transform, opacity;
+        }
+
+        @keyframes pulseShadow {
+            0% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
+            50% {
+                transform: scale(0.85, 0.82);
+                opacity: 0.14;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
+        }
+
+        /* BOUNCE ON CLICK */
+        .bounce-click {
+            animation: bounceAnim 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        }
+
+        @keyframes bounceAnim {
+            0% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-24px) scale(1.03); }
+            50% { transform: translateY(5px) scale(0.98); }
+            75% { transform: translateY(-5px) scale(1.01); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        /* GLOW PARTICLES (GENERATIVE SPAWNER) */
+        .particle-sparkle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,215,100,0.6) 60%, transparent 100%);
+            animation: floatUpParticle 1.4s ease-out forwards;
+        }
+
+        @keyframes floatUpParticle {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--p-dx), var(--p-dy)) scale(0.2);
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Background Audio Placeholder -->
-    <!-- <audio id="bg-music" src="assets/piano.mp3" loop></audio> -->
 
-    <!-- Dynamic Backgrounds -->
-    <div id="bg-afternoon" class="bg-layer active"></div>
-    <div id="bg-sunset" class="bg-layer"></div>
-    
-    <!-- Canvas for Fireflies -->
-    <div id="fireflies-canvas"></div>
-    
-    <!-- Foreground Decorations (Generated via Code) -->
-    <div id="branch-left" class="code-decoration swaying-branch-left"></div>
-    <div id="branch-right" class="code-decoration swaying-branch-right"></div>
-    <div id="animated-garden"></div>
-    
-    <!-- Canvas for falling sakura petals -->
-    <canvas id="sakura-canvas"></canvas>
+<!-- REPLAY BUTTON -->
+<button class="replay-btn" id="replayBtn" title="Putar Ulang Animasi Awal">
+    <svg class="replay-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+    </svg>
+    <span class="btn-text-desktop">Putar Ulang Animasi (R)</span>
+    <span class="btn-text-mobile">Putar Ulang</span>
+</button>
 
-    <div id="white-overlay"></div>
+<div class="stage-container play-intro" id="stageContainer">
+    <div class="artwork-wrapper" id="artworkWrapper">
+        <svg class="main-svg" viewBox="0 0 1024 559" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- GRADIENTS -->
+                <linearGradient id="magentaGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#df4374"/>
+                    <stop offset="45%" stop-color="#bf2b5c"/>
+                    <stop offset="100%" stop-color="#8a183d"/>
+                </linearGradient>
 
-    <!-- Main Container -->
-    <main id="app-container">
+                <linearGradient id="lavenderGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#dc8fe0"/>
+                    <stop offset="50%" stop-color="#b657ba"/>
+                    <stop offset="100%" stop-color="#7a2a7e"/>
+                </linearGradient>
+
+                <linearGradient id="yellowGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ffd56b"/>
+                    <stop offset="45%" stop-color="#ebb142"/>
+                    <stop offset="100%" stop-color="#b3761a"/>
+                </linearGradient>
+
+                <linearGradient id="whiteGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="50%" stop-color="#e2f2e9"/>
+                    <stop offset="100%" stop-color="#a4c7b5"/>
+                </linearGradient>
+
+                <linearGradient id="rubyGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#d63d66"/>
+                    <stop offset="45%" stop-color="#b2244c"/>
+                    <stop offset="100%" stop-color="#730e2a"/>
+                </linearGradient>
+
+                <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#67ba7b"/>
+                    <stop offset="50%" stop-color="#408c52"/>
+                    <stop offset="100%" stop-color="#245c32"/>
+                </linearGradient>
+
+                <linearGradient id="wrapperBackGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#1e4e55"/>
+                    <stop offset="100%" stop-color="#12353a"/>
+                </linearGradient>
+
+                <linearGradient id="wrapperFrontGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#36868f"/>
+                    <stop offset="50%" stop-color="#286971"/>
+                    <stop offset="100%" stop-color="#1b4b51"/>
+                </linearGradient>
+
+                <linearGradient id="goldRibbonGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ffec99"/>
+                    <stop offset="35%" stop-color="#f5ca53"/>
+                    <stop offset="80%" stop-color="#c99120"/>
+                    <stop offset="100%" stop-color="#8f600d"/>
+                </linearGradient>
+
+                <radialGradient id="rubyGemGrad" cx="35%" cy="35%" r="70%">
+                    <stop offset="0%" stop-color="#e84d81"/>
+                    <stop offset="50%" stop-color="#b32454"/>
+                    <stop offset="100%" stop-color="#690c2a"/>
+                </radialGradient>
+
+                <linearGradient id="rubyRibbonGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ba2b57"/>
+                    <stop offset="60%" stop-color="#8f1b3e"/>
+                    <stop offset="100%" stop-color="#540a20"/>
+                </linearGradient>
+
+                <filter id="shadowBlur" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5"/>
+                </filter>
+
+                <filter id="lapelShadow" x="-10%" y="-10%" width="130%" height="130%">
+                    <feDropShadow dx="-3" dy="4" stdDeviation="3" flood-color="#0b2226" flood-opacity="0.32"/>
+                </filter>
+
+                
+    <pattern id="goldDamask" width="32" height="32" patternUnits="userSpaceOnUse">
+        <path d="M 0 16 Q 16 0 32 16 Q 16 32 0 16 Z" fill="none" stroke="rgba(242, 218, 145, 0.26)" stroke-width="1.1"/>
+        <path d="M 16 0 Q 32 16 16 32 Q 0 16 16 0 Z" fill="none" stroke="rgba(242, 218, 145, 0.26)" stroke-width="1.1"/>
+        <circle cx="16" cy="16" r="2.0" fill="rgba(248, 226, 160, 0.5)"/>
+        <circle cx="0" cy="0" r="1.6" fill="rgba(248, 226, 160, 0.4)"/>
+        <circle cx="32" cy="0" r="1.6" fill="rgba(248, 226, 160, 0.4)"/>
+        <circle cx="0" cy="32" r="1.6" fill="rgba(248, 226, 160, 0.4)"/>
+        <circle cx="32" cy="32" r="1.6" fill="rgba(248, 226, 160, 0.4)"/>
+        <path d="M 16 12 L 20 16 L 16 20 L 12 16 Z" fill="none" stroke="rgba(248, 226, 160, 0.4)" stroke-width="0.8"/>
+        <path d="M 16 5 Q 19 9 16 13 Q 13 9 16 5 Z" fill="none" stroke="rgba(242, 218, 145, 0.28)" stroke-width="0.75"/>
+        <path d="M 16 19 Q 19 23 16 27 Q 13 23 16 19 Z" fill="none" stroke="rgba(242, 218, 145, 0.28)" stroke-width="0.75"/>
+        <path d="M 5 16 Q 9 19 13 16 Q 9 13 5 16 Z" fill="none" stroke="rgba(242, 218, 145, 0.28)" stroke-width="0.75"/>
+        <path d="M 19 16 Q 23 19 27 16 Q 23 13 19 16 Z" fill="none" stroke="rgba(242, 218, 145, 0.28)" stroke-width="0.75"/>
+    </pattern>
+    
+            </defs>
+
+            <!-- ====================================================================
+                 LAYER 1: BLUEPRINT TECHNICAL GRID & CONSTRUCTION MARKS
+                 ==================================================================== -->
+            <g id="blueprintGrid">
+                <!-- Background Grid Lines -->
+                <path class="blueprint-line" d="
+                    M 345 60 L 680 60
+                    M 345 92 L 680 92
+                    M 345 124 L 750 124
+                    M 345 156 L 750 156
+                    M 345 188 L 750 188
+                    M 345 220 L 750 220
+                    M 345 252 L 750 252
+                    M 345 284 L 650 284
+                    M 345 316 L 650 316
+                    M 345 348 L 650 348
+                    M 345 380 L 650 380
+                    
+                    M 377 60 L 377 380
+                    M 409 60 L 409 380
+                    M 441 60 L 441 380
+                    M 473 60 L 473 380
+                    M 505 60 L 505 380
+                    M 537 60 L 537 380
+                    M 569 60 L 569 380
+                    M 601 60 L 601 380
+                    M 633 60 L 633 380
+                    M 665 60 L 665 380
+                    M 697 124 L 697 220
+                    M 729 124 L 729 220
+                " fill="none" stroke="#d0e2ee" stroke-width="0.9"/>
+
+                <!-- Blueprint Construction Circles and Crosshairs -->
+                <circle class="blueprint-marker" cx="368" cy="144" r="5.5" fill="none" stroke="#b2cadb" stroke-width="1.2"/>
+                <circle class="blueprint-marker" cx="368" cy="144" r="1.5" fill="#b2cadb"/>
+                
+                <!-- Left Dashed Technical Guide Line -->
+                <line class="blueprint-line" x1="298" y1="160" x2="298" y2="350" stroke="#b2cadb" stroke-width="1.1" stroke-dasharray="4,4"/>
+                <line class="blueprint-marker" x1="293" y1="260" x2="303" y2="260" stroke="#b2cadb" stroke-width="1.2"/>
+                <path class="blueprint-line" d="M 298 260 L 320 260" stroke="#b2cadb" stroke-width="1.1"/>
+                <circle class="blueprint-marker" cx="320" cy="260" r="1.5" fill="#b2cadb"/>
+
+                <!-- Right Dimension Marker & Ticks -->
+                <line class="blueprint-line" x1="680" y1="110" x2="745" y2="110" stroke="#b2cadb" stroke-width="1.1"/>
+                <line class="blueprint-line" x1="745" y1="105" x2="745" y2="180" stroke="#b2cadb" stroke-width="1.1"/>
+                <circle class="blueprint-marker" cx="745" cy="110" r="3" fill="#b2cadb"/>
+
+                <!-- Split Technical Box on Right -->
+                <rect class="blueprint-marker" x="712" y="306" width="24" height="14" fill="none" stroke="#b2cadb" stroke-width="1.1"/>
+                <line class="blueprint-marker" x1="724" y1="306" x2="724" y2="320" stroke="#b2cadb" stroke-width="1.1"/>
+
+                <!-- Fine 45-degree Guide Line -->
+                <line class="blueprint-line" x1="320" y1="205" x2="285" y2="240" stroke="#b2cadb" stroke-width="1.0" stroke-dasharray="3,3"/>
+            </g>
+
+            <!-- ====================================================================
+                 LAYER 2: DYNAMIC GROUND SHADOW (Inverted scale with anti-gravity float)
+                 ==================================================================== -->
+            <ellipse class="ground-shadow" cx="508" cy="458" rx="130" ry="14"
+                     fill="#0c2542" filter="url(#shadowBlur)"/>
+
+            <!-- ====================================================================
+                 LAYER 3: THE ANTI-GRAVITY BOUQUET (Animated & Interactive)
+                 ==================================================================== -->
+            <g class="anti-gravity-float" id="interactiveBouquet">
+
+                <!-- ------------------------------------------------------------
+                     3A. PERIMETER BACKGROUND LEAVES (Behind all flowers)
+                     ------------------------------------------------------------ -->
+                
+    <g class="bouquet-leaf leaf-unfurl-1" style="transform-origin: 495.0px 80.0px;">
+        <path d="M 495.0 80.0 Q 476.7 45.5 440.0 32.0 Q 458.3 66.5 495.0 80.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 495.0 80.0 Q 467.5 56.0 440.0 32.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 470.2 58.4 L 473.0 49.7"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 470.2 58.4 L 462.0 62.3"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                
+    <g class="bouquet-leaf leaf-unfurl-1" style="transform-origin: 520.0px 80.0px;">
+        <path d="M 520.0 80.0 Q 557.1 66.6 576.0 32.0 Q 538.9 45.4 520.0 80.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 520.0 80.0 Q 548.0 56.0 576.0 32.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 545.2 58.4 L 553.5 62.4"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 545.2 58.4 L 542.5 49.6"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+
+                
+    <g class="bouquet-leaf leaf-unfurl-2" style="transform-origin: 410.0px 110.0px;">
+        <path d="M 410.0 110.0 Q 402.5 80.7 375.0 68.0 Q 382.5 97.3 410.0 110.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 410.0 110.0 Q 392.5 89.0 375.0 68.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 394.2 91.1 L 398.5 84.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 394.2 91.1 L 386.5 94.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                
+    <g class="bouquet-leaf leaf-unfurl-2" style="transform-origin: 395.0px 140.0px;">
+        <path d="M 395.0 140.0 Q 368.1 132.2 345.0 148.0 Q 371.9 155.8 395.0 140.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 395.0 140.0 Q 370.0 144.0 345.0 148.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 372.5 143.6 L 368.9 136.9"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 372.5 143.6 L 371.1 151.1"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+
+                
+    <g class="bouquet-leaf leaf-unfurl-2" style="transform-origin: 605.0px 110.0px;">
+        <path d="M 605.0 110.0 Q 632.5 97.3 640.0 68.0 Q 612.5 80.7 605.0 110.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 605.0 110.0 Q 622.5 89.0 640.0 68.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 620.8 91.1 L 628.5 94.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 620.8 91.1 L 616.5 84.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                
+    <g class="bouquet-leaf leaf-unfurl-2" style="transform-origin: 620.0px 140.0px;">
+        <path d="M 620.0 140.0 Q 644.2 155.9 672.0 148.0 Q 647.8 132.1 620.0 140.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 620.0 140.0 Q 646.0 144.0 672.0 148.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 643.4 143.6 L 644.9 151.1"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 643.4 143.6 L 647.1 136.9"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+
+                
+    <g class="bouquet-leaf leaf-unfurl-3" style="transform-origin: 385.0px 235.0px;">
+        <path d="M 385.0 235.0 Q 359.6 235.5 348.0 258.0 Q 373.4 257.5 385.0 235.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 385.0 235.0 Q 366.5 246.5 348.0 258.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 368.4 245.3 L 362.4 239.9"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 368.4 245.3 L 370.6 253.1"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                
+    <g class="bouquet-leaf leaf-unfurl-3" style="transform-origin: 630.0px 235.0px;">
+        <path d="M 630.0 235.0 Q 641.0 257.5 666.0 258.0 Q 655.0 235.5 630.0 235.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 630.0 235.0 Q 648.0 246.5 666.0 258.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 646.2 245.3 L 643.8 253.1"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 646.2 245.3 L 652.2 239.9"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+
+                <!-- ------------------------------------------------------------
+                     3B. BACK WALL / INTERIOR OF CHALICE WRAPPER
+                     ------------------------------------------------------------ -->
+                <g id="wrapperBack">
+                    <path d="M 370 230 C 400 185, 450 180, 508 180 C 566 180, 616 185, 646 230 L 536 368 L 480 368 Z"
+                          fill="url(#wrapperBackGrad)" stroke="#102e33" stroke-width="2.2"/>
+                    <path d="M 370 230 C 400 185, 450 180, 508 180 C 566 180, 616 185, 646 230 L 536 368 L 480 368 Z"
+                          fill="url(#goldDamask)" opacity="0.6"/>
+                    <path d="M 370 230 C 400 185, 450 180, 508 180 C 566 180, 616 185, 646 230"
+                          fill="none" stroke="#d4ab45" stroke-width="3.5" stroke-linecap="round"/>
+                </g>
+
+                <!-- ------------------------------------------------------------
+                     3C. ROSE STEMS & INNER FOLIAGE
+                     ------------------------------------------------------------ -->
+                <g id="bouquetStems">
+                    <path d="M 508 120 L 508 285" stroke="#1c4424" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M 508 120 L 508 285" stroke="#448d56" stroke-width="5.5" stroke-linecap="round"/>
+                    <path d="M 509 120 L 509 285" stroke="#7dd395" stroke-width="1.4" stroke-linecap="round"/>
+
+                    <path d="M 445 155 L 502 285" stroke="#1c4424" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M 445 155 L 502 285" stroke="#448d56" stroke-width="4.5" stroke-linecap="round"/>
+
+                    <path d="M 570 155 L 514 285" stroke="#1c4424" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M 570 155 L 514 285" stroke="#448d56" stroke-width="4.5" stroke-linecap="round"/>
+
+                    <path d="M 508 215 L 508 285" stroke="#1c4424" stroke-width="9" stroke-linecap="round"/>
+                    <path d="M 508 215 L 508 285" stroke="#448d56" stroke-width="6.5" stroke-linecap="round"/>
+                    <path d="M 509 215 L 509 285" stroke="#7dd395" stroke-width="1.6" stroke-linecap="round"/>
+
+                    <path d="M 440 255 L 500 285" stroke="#1c4424" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M 440 255 L 500 285" stroke="#448d56" stroke-width="5.5" stroke-linecap="round"/>
+
+                    <path d="M 576 255 L 516 285" stroke="#1c4424" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M 576 255 L 516 285" stroke="#448d56" stroke-width="5.5" stroke-linecap="round"/>
+
+                    
+    <g class="bouquet-leaf leaf-unfurl-3" style="transform-origin: 508.0px 252.0px;">
+        <path d="M 508.0 252.0 Q 493.5 233.5 470.0 235.0 Q 484.5 253.5 508.0 252.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 508.0 252.0 Q 489.0 243.5 470.0 235.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 490.9 244.4 L 491.7 237.5"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 490.9 244.4 L 486.3 249.5"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                    
+    <g class="bouquet-leaf leaf-unfurl-3" style="transform-origin: 508.0px 252.0px;">
+        <path d="M 508.0 252.0 Q 531.5 253.5 546.0 235.0 Q 522.5 233.5 508.0 252.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 508.0 252.0 Q 527.0 243.5 546.0 235.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 525.1 244.4 L 529.7 249.5"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 525.1 244.4 L 524.3 237.5"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                    
+    <g class="bouquet-leaf leaf-unfurl-3" style="transform-origin: 508.0px 272.0px;">
+        <path d="M 508.0 272.0 Q 496.7 256.7 478.0 260.0 Q 489.3 275.3 508.0 272.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 508.0 272.0 Q 493.0 266.0 478.0 260.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 494.5 266.6 L 495.2 260.4"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 494.5 266.6 L 490.8 271.6"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                    
+    <g class="bouquet-leaf leaf-unfurl-3" style="transform-origin: 508.0px 272.0px;">
+        <path d="M 508.0 272.0 Q 526.7 275.3 538.0 260.0 Q 519.3 256.7 508.0 272.0 Z"
+              fill="url(#leafGrad)" stroke="#1a3d24" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- Central Vein -->
+        <path d="M 508.0 272.0 Q 523.0 266.0 538.0 260.0"
+              fill="none" stroke="#7ec98f" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- Side rib lines -->
+        <path d="M 521.5 266.6 L 525.2 271.6"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+        <path d="M 521.5 266.6 L 520.8 260.4"
+              fill="none" stroke="#7ec98f" stroke-width="1.0" opacity="0.8"/>
+    </g>
+    
+                </g>
+
+                <!-- ------------------------------------------------------------
+                     3D. BACKGROUND ROSES (Layer 1 & 2)
+                     ------------------------------------------------------------ -->
+                <g id="rose_1_top" class="bloom-rose-top" style="transform-origin: 508px 95px;">
+<g transform="translate(508, 95) rotate(8)">
+<circle cx="0" cy="0" r="49.2" fill="#541427" opacity="0.32"/>
+<path d="M 48.00 0.00 Q 45.41 21.87 29.93 37.53 L 21.85 27.40 Q 30.94 14.90 35.04 0.00 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 46.08 0.00 Q 43.59 20.99 28.73 36.03" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 37.53 Q 11.22 49.14 -10.68 46.80 L -7.80 34.16 Q 7.64 33.48 21.85 27.40 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 36.03 Q 10.77 47.17 -10.25 44.92" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 46.80 Q -31.42 39.40 -43.25 20.83 L -31.57 15.20 Q -21.41 26.85 -7.80 34.16 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 44.92 Q -30.17 37.83 -41.52 19.99" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 20.83 Q -50.40 0.00 -43.25 -20.83 L -31.57 -15.20 Q -34.34 0.00 -31.57 15.20 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 19.99 Q -48.38 0.00 -41.52 -19.99" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 -20.83 Q -31.42 -39.40 -10.68 -46.80 L -7.80 -34.16 Q -21.41 -26.85 -31.57 -15.20 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 -19.99 Q -30.17 -37.83 -10.25 -44.92" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 -46.80 Q 11.22 -49.14 29.93 -37.53 L 21.85 -27.40 Q 7.64 -33.48 -7.80 -34.16 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 -44.92 Q 10.77 -47.17 28.73 -36.03" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 -37.53 Q 45.41 -21.87 48.00 -0.00 L 35.04 -0.00 Q 30.94 -14.90 21.85 -27.40 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 -36.03 Q 43.59 -20.99 46.08 -0.00" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 34.60 9.95 Q 26.24 27.21 8.68 34.94 L 5.67 22.83 Q 16.00 16.59 22.60 6.50 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 33.21 9.55 Q 25.19 26.12 8.34 33.54" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 8.68 34.94 Q -10.45 36.33 -25.91 24.99 L -16.93 16.33 Q -6.37 22.15 5.67 22.83 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 8.34 33.54 Q -10.03 34.87 -24.88 23.99" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -25.91 24.99 Q -36.68 9.12 -34.60 -9.95 L -22.60 -6.50 Q -22.37 5.56 -16.93 16.33 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -24.88 23.99 Q -35.22 8.75 -33.21 -9.55" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -34.60 -9.95 Q -26.24 -27.21 -8.68 -34.94 L -5.67 -22.83 Q -16.00 -16.59 -22.60 -6.50 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -33.21 -9.55 Q -25.19 -26.12 -8.34 -33.54" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -8.68 -34.94 Q 10.45 -36.33 25.91 -24.99 L 16.93 -16.33 Q 6.37 -22.15 -5.67 -22.83 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -8.34 -33.54 Q 10.03 -34.87 24.88 -23.99" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 25.91 -24.99 Q 36.68 -9.12 34.60 9.95 L 22.60 6.50 Q 22.37 -5.56 16.93 -16.33 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 24.88 -23.99 Q 35.22 -8.75 33.21 9.55" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 21.00 12.59 Q 10.07 23.65 -5.48 23.86 L -3.01 13.10 Q 5.16 12.12 11.53 6.91 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 20.16 12.08 Q 9.67 22.70 -5.26 22.90" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -5.48 23.86 Q -19.38 16.88 -24.38 2.16 L -13.39 1.19 Q -9.93 8.65 -3.01 13.10 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -5.26 22.90 Q -18.61 16.21 -23.41 2.07" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -24.38 2.16 Q -22.05 -13.22 -9.59 -22.52 L -5.26 -12.37 Q -11.30 -6.77 -13.39 1.19 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -23.41 2.07 Q -21.16 -12.69 -9.21 -21.62" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -9.59 -22.52 Q 5.76 -25.05 18.46 -16.08 L 10.13 -8.83 Q 2.95 -12.84 -5.26 -12.37 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -9.21 -21.62 Q 5.53 -24.05 17.72 -15.44" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M 18.46 -16.08 Q 25.60 -2.27 21.00 12.59 L 11.53 6.91 Q 13.12 -1.16 10.13 -8.83 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 17.72 -15.44 Q 24.58 -2.18 20.16 12.08" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M 13.53 4.94 A 14.40 14.40 0 0 1 -11.09 9.18 Q 0 0 13.53 4.94 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.6"/>
+<path d="M -11.04 9.25 A 14.40 14.40 0 0 1 -2.41 -14.20 Q 0 0 -11.04 9.25 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.6"/>
+<path d="M -2.49 -14.18 A 14.40 14.40 0 0 1 13.50 5.01 Q 0 0 -2.49 -14.18 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.6"/>
+<polygon points="0,-11.52 11.52,0 0,0" fill="#ea6692" stroke="#541427" stroke-width="1.3"/>
+<polygon points="0,-11.52 -11.52,0 0,0" fill="#ea6692" stroke="#541427" stroke-width="1.3"/>
+<polygon points="0,0 11.52,0 0,11.52" fill="#ab2452" stroke="#541427" stroke-width="1.3"/>
+<polygon points="0,0 -11.52,0 0,11.52" fill="#ab2452" stroke="#541427" stroke-width="1.3"/>
+<circle cx="0" cy="-5.53" r="1.82" fill="#ff9ec0"/>
+</g>
+</g>
+                <g id="rose_2_upper_left" class="bloom-rose-ul" style="transform-origin: 431px 121px;">
+<g transform="translate(431, 121) rotate(-14)">
+<circle cx="0" cy="0" r="49.2" fill="#4e1e4a" opacity="0.32"/>
+<path d="M 48.00 0.00 Q 45.41 21.87 29.93 37.53 L 21.85 27.40 Q 30.94 14.90 35.04 0.00 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 46.08 0.00 Q 43.59 20.99 28.73 36.03" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 37.53 Q 11.22 49.14 -10.68 46.80 L -7.80 34.16 Q 7.64 33.48 21.85 27.40 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 36.03 Q 10.77 47.17 -10.25 44.92" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 46.80 Q -31.42 39.40 -43.25 20.83 L -31.57 15.20 Q -21.41 26.85 -7.80 34.16 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 44.92 Q -30.17 37.83 -41.52 19.99" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 20.83 Q -50.40 0.00 -43.25 -20.83 L -31.57 -15.20 Q -34.34 0.00 -31.57 15.20 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 19.99 Q -48.38 0.00 -41.52 -19.99" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 -20.83 Q -31.42 -39.40 -10.68 -46.80 L -7.80 -34.16 Q -21.41 -26.85 -31.57 -15.20 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 -19.99 Q -30.17 -37.83 -10.25 -44.92" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 -46.80 Q 11.22 -49.14 29.93 -37.53 L 21.85 -27.40 Q 7.64 -33.48 -7.80 -34.16 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 -44.92 Q 10.77 -47.17 28.73 -36.03" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 -37.53 Q 45.41 -21.87 48.00 -0.00 L 35.04 -0.00 Q 30.94 -14.90 21.85 -27.40 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 -36.03 Q 43.59 -20.99 46.08 -0.00" fill="none" stroke="#f2b5f0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 34.60 9.95 Q 26.24 27.21 8.68 34.94 L 5.67 22.83 Q 16.00 16.59 22.60 6.50 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 33.21 9.55 Q 25.19 26.12 8.34 33.54" fill="none" stroke="#f2b5f0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 8.68 34.94 Q -10.45 36.33 -25.91 24.99 L -16.93 16.33 Q -6.37 22.15 5.67 22.83 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 8.34 33.54 Q -10.03 34.87 -24.88 23.99" fill="none" stroke="#f2b5f0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -25.91 24.99 Q -36.68 9.12 -34.60 -9.95 L -22.60 -6.50 Q -22.37 5.56 -16.93 16.33 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -24.88 23.99 Q -35.22 8.75 -33.21 -9.55" fill="none" stroke="#f2b5f0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -34.60 -9.95 Q -26.24 -27.21 -8.68 -34.94 L -5.67 -22.83 Q -16.00 -16.59 -22.60 -6.50 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -33.21 -9.55 Q -25.19 -26.12 -8.34 -33.54" fill="none" stroke="#f2b5f0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -8.68 -34.94 Q 10.45 -36.33 25.91 -24.99 L 16.93 -16.33 Q 6.37 -22.15 -5.67 -22.83 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -8.34 -33.54 Q 10.03 -34.87 24.88 -23.99" fill="none" stroke="#f2b5f0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 25.91 -24.99 Q 36.68 -9.12 34.60 9.95 L 22.60 6.50 Q 22.37 -5.56 16.93 -16.33 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 24.88 -23.99 Q 35.22 -8.75 33.21 9.55" fill="none" stroke="#f2b5f0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 21.00 12.59 Q 10.07 23.65 -5.48 23.86 L -3.01 13.10 Q 5.16 12.12 11.53 6.91 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 20.16 12.08 Q 9.67 22.70 -5.26 22.90" fill="none" stroke="#f2b5f0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -5.48 23.86 Q -19.38 16.88 -24.38 2.16 L -13.39 1.19 Q -9.93 8.65 -3.01 13.10 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -5.26 22.90 Q -18.61 16.21 -23.41 2.07" fill="none" stroke="#f2b5f0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -24.38 2.16 Q -22.05 -13.22 -9.59 -22.52 L -5.26 -12.37 Q -11.30 -6.77 -13.39 1.19 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -23.41 2.07 Q -21.16 -12.69 -9.21 -21.62" fill="none" stroke="#f2b5f0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -9.59 -22.52 Q 5.76 -25.05 18.46 -16.08 L 10.13 -8.83 Q 2.95 -12.84 -5.26 -12.37 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -9.21 -21.62 Q 5.53 -24.05 17.72 -15.44" fill="none" stroke="#f2b5f0" stroke-width="1.1" opacity="0.75"/>
+<path d="M 18.46 -16.08 Q 25.60 -2.27 21.00 12.59 L 11.53 6.91 Q 13.12 -1.16 10.13 -8.83 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 17.72 -15.44 Q 24.58 -2.18 20.16 12.08" fill="none" stroke="#f2b5f0" stroke-width="1.1" opacity="0.75"/>
+<path d="M 13.53 4.94 A 14.40 14.40 0 0 1 -11.09 9.18 Q 0 0 13.53 4.94 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.6"/>
+<path d="M -11.04 9.25 A 14.40 14.40 0 0 1 -2.41 -14.20 Q 0 0 -11.04 9.25 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.6"/>
+<path d="M -2.49 -14.18 A 14.40 14.40 0 0 1 13.50 5.01 Q 0 0 -2.49 -14.18 Z" fill="url(#lavenderGrad)" stroke="#4e1e4a" stroke-width="1.6"/>
+<polygon points="0,-11.52 11.52,0 0,0" fill="#dc8de0" stroke="#4e1e4a" stroke-width="1.3"/>
+<polygon points="0,-11.52 -11.52,0 0,0" fill="#dc8de0" stroke="#4e1e4a" stroke-width="1.3"/>
+<polygon points="0,0 11.52,0 0,11.52" fill="#8b338f" stroke="#4e1e4a" stroke-width="1.3"/>
+<polygon points="0,0 -11.52,0 0,11.52" fill="#8b338f" stroke="#4e1e4a" stroke-width="1.3"/>
+<circle cx="0" cy="-5.53" r="1.82" fill="#f2b5f0"/>
+</g>
+</g>
+                <g id="rose_3_upper_right" class="bloom-rose-ur" style="transform-origin: 585px 129px;">
+<g transform="translate(585, 129) rotate(18)">
+<circle cx="0" cy="0" r="49.2" fill="#663f0a" opacity="0.32"/>
+<path d="M 48.00 0.00 Q 45.41 21.87 29.93 37.53 L 21.85 27.40 Q 30.94 14.90 35.04 0.00 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 46.08 0.00 Q 43.59 20.99 28.73 36.03" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 37.53 Q 11.22 49.14 -10.68 46.80 L -7.80 34.16 Q 7.64 33.48 21.85 27.40 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 36.03 Q 10.77 47.17 -10.25 44.92" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 46.80 Q -31.42 39.40 -43.25 20.83 L -31.57 15.20 Q -21.41 26.85 -7.80 34.16 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 44.92 Q -30.17 37.83 -41.52 19.99" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 20.83 Q -50.40 0.00 -43.25 -20.83 L -31.57 -15.20 Q -34.34 0.00 -31.57 15.20 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 19.99 Q -48.38 0.00 -41.52 -19.99" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 -20.83 Q -31.42 -39.40 -10.68 -46.80 L -7.80 -34.16 Q -21.41 -26.85 -31.57 -15.20 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 -19.99 Q -30.17 -37.83 -10.25 -44.92" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 -46.80 Q 11.22 -49.14 29.93 -37.53 L 21.85 -27.40 Q 7.64 -33.48 -7.80 -34.16 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 -44.92 Q 10.77 -47.17 28.73 -36.03" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 -37.53 Q 45.41 -21.87 48.00 -0.00 L 35.04 -0.00 Q 30.94 -14.90 21.85 -27.40 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 -36.03 Q 43.59 -20.99 46.08 -0.00" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M 34.60 9.95 Q 26.24 27.21 8.68 34.94 L 5.67 22.83 Q 16.00 16.59 22.60 6.50 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 33.21 9.55 Q 25.19 26.12 8.34 33.54" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M 8.68 34.94 Q -10.45 36.33 -25.91 24.99 L -16.93 16.33 Q -6.37 22.15 5.67 22.83 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 8.34 33.54 Q -10.03 34.87 -24.88 23.99" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M -25.91 24.99 Q -36.68 9.12 -34.60 -9.95 L -22.60 -6.50 Q -22.37 5.56 -16.93 16.33 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -24.88 23.99 Q -35.22 8.75 -33.21 -9.55" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M -34.60 -9.95 Q -26.24 -27.21 -8.68 -34.94 L -5.67 -22.83 Q -16.00 -16.59 -22.60 -6.50 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -33.21 -9.55 Q -25.19 -26.12 -8.34 -33.54" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M -8.68 -34.94 Q 10.45 -36.33 25.91 -24.99 L 16.93 -16.33 Q 6.37 -22.15 -5.67 -22.83 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -8.34 -33.54 Q 10.03 -34.87 24.88 -23.99" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M 25.91 -24.99 Q 36.68 -9.12 34.60 9.95 L 22.60 6.50 Q 22.37 -5.56 16.93 -16.33 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 24.88 -23.99 Q 35.22 -8.75 33.21 9.55" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M 21.00 12.59 Q 10.07 23.65 -5.48 23.86 L -3.01 13.10 Q 5.16 12.12 11.53 6.91 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 20.16 12.08 Q 9.67 22.70 -5.26 22.90" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M -5.48 23.86 Q -19.38 16.88 -24.38 2.16 L -13.39 1.19 Q -9.93 8.65 -3.01 13.10 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -5.26 22.90 Q -18.61 16.21 -23.41 2.07" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M -24.38 2.16 Q -22.05 -13.22 -9.59 -22.52 L -5.26 -12.37 Q -11.30 -6.77 -13.39 1.19 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -23.41 2.07 Q -21.16 -12.69 -9.21 -21.62" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M -9.59 -22.52 Q 5.76 -25.05 18.46 -16.08 L 10.13 -8.83 Q 2.95 -12.84 -5.26 -12.37 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -9.21 -21.62 Q 5.53 -24.05 17.72 -15.44" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M 18.46 -16.08 Q 25.60 -2.27 21.00 12.59 L 11.53 6.91 Q 13.12 -1.16 10.13 -8.83 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 17.72 -15.44 Q 24.58 -2.18 20.16 12.08" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M 13.53 4.94 A 14.40 14.40 0 0 1 -11.09 9.18 Q 0 0 13.53 4.94 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.6"/>
+<path d="M -11.04 9.25 A 14.40 14.40 0 0 1 -2.41 -14.20 Q 0 0 -11.04 9.25 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.6"/>
+<path d="M -2.49 -14.18 A 14.40 14.40 0 0 1 13.50 5.01 Q 0 0 -2.49 -14.18 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.6"/>
+<polygon points="0,-11.52 11.52,0 0,0" fill="#fed86c" stroke="#663f0a" stroke-width="1.3"/>
+<polygon points="0,-11.52 -11.52,0 0,0" fill="#fed86c" stroke="#663f0a" stroke-width="1.3"/>
+<polygon points="0,0 11.52,0 0,11.52" fill="#b5791a" stroke="#663f0a" stroke-width="1.3"/>
+<polygon points="0,0 -11.52,0 0,11.52" fill="#b5791a" stroke="#663f0a" stroke-width="1.3"/>
+<circle cx="0" cy="-5.53" r="1.82" fill="#ffe894"/>
+</g>
+</g>
+
+                
+    <g id="rose_5_far_left" class="bloom-rose-sl" style="transform-origin: 378px 175px;">
+    <g transform="translate(378, 175) rotate(-36) scale(1.0, 1.0)">
+        <!-- Base Shadow -->
+        <ellipse cx="0" cy="0" rx="42" ry="36" fill="#3c0817" opacity="0.32"/>
         
-        <!-- Opening Scene: The Envelope -->
-        <section id="scene-opening" class="scene active">
-            <div class="envelope-wrapper" id="envelope-wrapper">
-                <div class="envelope" id="envelope">
-                    <div class="env-back"></div>
-                    <div class="env-letter" id="env-letter">
-                        <div class="letter-content">
-                            <p>To You...</p>
-                        </div>
-                    </div>
-                    <div class="env-left"></div>
-                    <div class="env-right"></div>
-                    <div class="env-bottom"></div>
-                    <div class="env-top" id="env-top"></div>
-                    <div class="env-seal" id="env-seal">
-                        <div class="env-seal-center"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="start-hint">Tap amplop untuk membuka</div>
-        </section>
-
-        <!-- Story Scene -->
-        <section id="scene-story" class="scene">
-            <div class="paper-container">
+        <!-- Outer Lower Petal Bowl -->
+        <path d="M -38 6 C -36 32, 2 38, 32 22 C 40 14, 42 -2, 28 -18 C 16 -32, -14 -32, -30 -18 C -40 -4, -40 -2, -38 6 Z"
+              fill="url(#rubyGrad)" stroke="#520f23" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M -32 8 C -30 26, 0 32, 26 20" fill="none" stroke="#ff8ba9" stroke-width="1.4" opacity="0.85"/>
+        
+        <!-- Lower Lap Petal -->
+        <path d="M -34 4 C -30 24, -2 28, 24 18 C 12 26, -14 26, -32 16 Z"
+              fill="#9e1e43" stroke="#520f23" stroke-width="1.9"/>
+        
+        <!-- Center Bud Opening with Warm Apricot Inner Petal Lips -->
+        <path d="M -26 -14 C -8 -26, 20 -22, 32 -8 C 28 8, 6 18, -16 14 C -26 8, -30 -4, -26 -14 Z"
+              fill="url(#rubyGrad)" stroke="#520f23" stroke-width="2.2"/>
+        
+        <!-- Inner Peach/Apricot Lip (Iconic to reference image) -->
+        <path d="M -16 -2 C -4 -12, 12 -10, 18 0 C 10 4, -4 4, -16 -2 Z"
+              fill="#f29b7c" stroke="#68182d" stroke-width="1.6"/>
+        <path d="M -12 -4 C -2 -9, 8 -8, 14 -2" fill="none" stroke="#ffd1c2" stroke-width="1.2"/>
+        
+        <!-- Upper Arching Petals -->
+        <path d="M -22 -16 C -14 -28, 8 -26, 18 -18 C 8 -20, -8 -20, -20 -14 Z"
+              fill="#bd2d5a" stroke="#520f23" stroke-width="1.9"/>
+        <path d="M -16 -22 C -4 -26, 10 -24, 16 -18" fill="none" stroke="#ff94b4" stroke-width="1.3"/>
+        
+        <!-- Central Spiral Core -->
+        <path d="M -9 -9 C -2 -16, 9 -14, 11 -4 C 9 2, 0 4, -7 0 Z"
+              fill="#db4473" stroke="#520f23" stroke-width="1.7"/>
+        <polygon points="-2,-10 5,-6 2,-2 -5,-7" fill="#f8b49e" stroke="#520f23" stroke-width="1.2"/>
+    </g>
+    </g>
+    
                 
-                <!-- Page 1 -->
-                <div id="page-1" class="page active">
-                    <div class="letter-content">
-                        <p class="handwriting">Hai Lila Sayangku...</p>
-                        <p class="handwriting">Aku membuat ini karena aku tidak mau kamu pergi dari ku.</p>
-                        <p class="handwriting">Maafkan aku ucap hatiku yang terdalam...</p>
-                    </div>
-                    <button class="btn-next" onclick="nextPage(2)">Next ➜</button>
-                </div>
+    <g id="rose_8_far_right" class="bloom-rose-sr" style="transform-origin: 638px 175px;">
+    <g transform="translate(638, 175) rotate(36) scale(-1.0, 1.0)">
+        <!-- Base Shadow -->
+        <ellipse cx="0" cy="0" rx="42" ry="36" fill="#3c0817" opacity="0.32"/>
+        
+        <!-- Outer Lower Petal Bowl -->
+        <path d="M -38 6 C -36 32, 2 38, 32 22 C 40 14, 42 -2, 28 -18 C 16 -32, -14 -32, -30 -18 C -40 -4, -40 -2, -38 6 Z"
+              fill="url(#rubyGrad)" stroke="#520f23" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M -32 8 C -30 26, 0 32, 26 20" fill="none" stroke="#ff8ba9" stroke-width="1.4" opacity="0.85"/>
+        
+        <!-- Lower Lap Petal -->
+        <path d="M -34 4 C -30 24, -2 28, 24 18 C 12 26, -14 26, -32 16 Z"
+              fill="#9e1e43" stroke="#520f23" stroke-width="1.9"/>
+        
+        <!-- Center Bud Opening with Warm Apricot Inner Petal Lips -->
+        <path d="M -26 -14 C -8 -26, 20 -22, 32 -8 C 28 8, 6 18, -16 14 C -26 8, -30 -4, -26 -14 Z"
+              fill="url(#rubyGrad)" stroke="#520f23" stroke-width="2.2"/>
+        
+        <!-- Inner Peach/Apricot Lip (Iconic to reference image) -->
+        <path d="M -16 -2 C -4 -12, 12 -10, 18 0 C 10 4, -4 4, -16 -2 Z"
+              fill="#f29b7c" stroke="#68182d" stroke-width="1.6"/>
+        <path d="M -12 -4 C -2 -9, 8 -8, 14 -2" fill="none" stroke="#ffd1c2" stroke-width="1.2"/>
+        
+        <!-- Upper Arching Petals -->
+        <path d="M -22 -16 C -14 -28, 8 -26, 18 -18 C 8 -20, -8 -20, -20 -14 Z"
+              fill="#bd2d5a" stroke="#520f23" stroke-width="1.9"/>
+        <path d="M -16 -22 C -4 -26, 10 -24, 16 -18" fill="none" stroke="#ff94b4" stroke-width="1.3"/>
+        
+        <!-- Central Spiral Core -->
+        <path d="M -9 -9 C -2 -16, 9 -14, 11 -4 C 9 2, 0 4, -7 0 Z"
+              fill="#db4473" stroke="#520f23" stroke-width="1.7"/>
+        <polygon points="-2,-10 5,-6 2,-2 -5,-7" fill="#f8b49e" stroke="#520f23" stroke-width="1.2"/>
+    </g>
+    </g>
+    
 
-                <!-- Page 2 -->
-                <div id="page-2" class="page">
-                    <div class="letter-content sequence-fade">
-                        <p class="handwriting fade-item">Aku tidak bermaksud membuatmu marah waktu itu.</p>
-                        <p class="handwriting fade-item">Ini hanya kesalah pahaman saja sayangku, mungkin dari sebelum nya aku sudah berbuat salah karna ngga pegang omonganku. semalem aku bermaksud bertanya, cemburu sedikit tapi lebih ke iri. aku tidak mau berpisah sama kamu......</p>
-                        <p class="handwriting fade-item">Tolong pertahanin ini yak sayangku, jangan pergi...</p>
-                    </div>
-                    <button class="btn-next" onclick="nextPage(3)">Next ➜</button>
-                </div>
+                <!-- ------------------------------------------------------------
+                     3E. FOREGROUND ROSES (Layer 3)
+                     ------------------------------------------------------------ -->
+                <g id="rose_6_lower_left" class="bloom-rose-ll" style="transform-origin: 432px 227px;">
+<g transform="translate(432, 227) rotate(-6)">
+<circle cx="0" cy="0" r="49.2" fill="#663f0a" opacity="0.32"/>
+<path d="M 48.00 0.00 Q 45.41 21.87 29.93 37.53 L 21.85 27.40 Q 30.94 14.90 35.04 0.00 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 46.08 0.00 Q 43.59 20.99 28.73 36.03" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 37.53 Q 11.22 49.14 -10.68 46.80 L -7.80 34.16 Q 7.64 33.48 21.85 27.40 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 36.03 Q 10.77 47.17 -10.25 44.92" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 46.80 Q -31.42 39.40 -43.25 20.83 L -31.57 15.20 Q -21.41 26.85 -7.80 34.16 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 44.92 Q -30.17 37.83 -41.52 19.99" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 20.83 Q -50.40 0.00 -43.25 -20.83 L -31.57 -15.20 Q -34.34 0.00 -31.57 15.20 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 19.99 Q -48.38 0.00 -41.52 -19.99" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 -20.83 Q -31.42 -39.40 -10.68 -46.80 L -7.80 -34.16 Q -21.41 -26.85 -31.57 -15.20 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 -19.99 Q -30.17 -37.83 -10.25 -44.92" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 -46.80 Q 11.22 -49.14 29.93 -37.53 L 21.85 -27.40 Q 7.64 -33.48 -7.80 -34.16 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 -44.92 Q 10.77 -47.17 28.73 -36.03" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 -37.53 Q 45.41 -21.87 48.00 -0.00 L 35.04 -0.00 Q 30.94 -14.90 21.85 -27.40 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 -36.03 Q 43.59 -20.99 46.08 -0.00" fill="none" stroke="#ffe894" stroke-width="1.3" opacity="0.85"/>
+<path d="M 34.60 9.95 Q 26.24 27.21 8.68 34.94 L 5.67 22.83 Q 16.00 16.59 22.60 6.50 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 33.21 9.55 Q 25.19 26.12 8.34 33.54" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M 8.68 34.94 Q -10.45 36.33 -25.91 24.99 L -16.93 16.33 Q -6.37 22.15 5.67 22.83 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 8.34 33.54 Q -10.03 34.87 -24.88 23.99" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M -25.91 24.99 Q -36.68 9.12 -34.60 -9.95 L -22.60 -6.50 Q -22.37 5.56 -16.93 16.33 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -24.88 23.99 Q -35.22 8.75 -33.21 -9.55" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M -34.60 -9.95 Q -26.24 -27.21 -8.68 -34.94 L -5.67 -22.83 Q -16.00 -16.59 -22.60 -6.50 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -33.21 -9.55 Q -25.19 -26.12 -8.34 -33.54" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M -8.68 -34.94 Q 10.45 -36.33 25.91 -24.99 L 16.93 -16.33 Q 6.37 -22.15 -5.67 -22.83 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -8.34 -33.54 Q 10.03 -34.87 24.88 -23.99" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M 25.91 -24.99 Q 36.68 -9.12 34.60 9.95 L 22.60 6.50 Q 22.37 -5.56 16.93 -16.33 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 24.88 -23.99 Q 35.22 -8.75 33.21 9.55" fill="none" stroke="#ffe894" stroke-width="1.2" opacity="0.8"/>
+<path d="M 21.00 12.59 Q 10.07 23.65 -5.48 23.86 L -3.01 13.10 Q 5.16 12.12 11.53 6.91 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 20.16 12.08 Q 9.67 22.70 -5.26 22.90" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M -5.48 23.86 Q -19.38 16.88 -24.38 2.16 L -13.39 1.19 Q -9.93 8.65 -3.01 13.10 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -5.26 22.90 Q -18.61 16.21 -23.41 2.07" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M -24.38 2.16 Q -22.05 -13.22 -9.59 -22.52 L -5.26 -12.37 Q -11.30 -6.77 -13.39 1.19 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -23.41 2.07 Q -21.16 -12.69 -9.21 -21.62" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M -9.59 -22.52 Q 5.76 -25.05 18.46 -16.08 L 10.13 -8.83 Q 2.95 -12.84 -5.26 -12.37 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -9.21 -21.62 Q 5.53 -24.05 17.72 -15.44" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M 18.46 -16.08 Q 25.60 -2.27 21.00 12.59 L 11.53 6.91 Q 13.12 -1.16 10.13 -8.83 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 17.72 -15.44 Q 24.58 -2.18 20.16 12.08" fill="none" stroke="#ffe894" stroke-width="1.1" opacity="0.75"/>
+<path d="M 13.53 4.94 A 14.40 14.40 0 0 1 -11.09 9.18 Q 0 0 13.53 4.94 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.6"/>
+<path d="M -11.04 9.25 A 14.40 14.40 0 0 1 -2.41 -14.20 Q 0 0 -11.04 9.25 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.6"/>
+<path d="M -2.49 -14.18 A 14.40 14.40 0 0 1 13.50 5.01 Q 0 0 -2.49 -14.18 Z" fill="url(#yellowGrad)" stroke="#663f0a" stroke-width="1.6"/>
+<polygon points="0,-11.52 11.52,0 0,0" fill="#fed86c" stroke="#663f0a" stroke-width="1.3"/>
+<polygon points="0,-11.52 -11.52,0 0,0" fill="#fed86c" stroke="#663f0a" stroke-width="1.3"/>
+<polygon points="0,0 11.52,0 0,11.52" fill="#b5791a" stroke="#663f0a" stroke-width="1.3"/>
+<polygon points="0,0 -11.52,0 0,11.52" fill="#b5791a" stroke="#663f0a" stroke-width="1.3"/>
+<circle cx="0" cy="-5.53" r="1.82" fill="#ffe894"/>
+</g>
+</g>
+                <g id="rose_7_lower_right" class="bloom-rose-lr" style="transform-origin: 584px 224px;">
+<g transform="translate(584, 224) rotate(10)">
+<circle cx="0" cy="0" r="49.2" fill="#294b39" opacity="0.32"/>
+<path d="M 48.00 0.00 Q 45.41 21.87 29.93 37.53 L 21.85 27.40 Q 30.94 14.90 35.04 0.00 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 46.08 0.00 Q 43.59 20.99 28.73 36.03" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 37.53 Q 11.22 49.14 -10.68 46.80 L -7.80 34.16 Q 7.64 33.48 21.85 27.40 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 36.03 Q 10.77 47.17 -10.25 44.92" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 46.80 Q -31.42 39.40 -43.25 20.83 L -31.57 15.20 Q -21.41 26.85 -7.80 34.16 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 44.92 Q -30.17 37.83 -41.52 19.99" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 20.83 Q -50.40 0.00 -43.25 -20.83 L -31.57 -15.20 Q -34.34 0.00 -31.57 15.20 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 19.99 Q -48.38 0.00 -41.52 -19.99" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M -43.25 -20.83 Q -31.42 -39.40 -10.68 -46.80 L -7.80 -34.16 Q -21.41 -26.85 -31.57 -15.20 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -41.52 -19.99 Q -30.17 -37.83 -10.25 -44.92" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M -10.68 -46.80 Q 11.22 -49.14 29.93 -37.53 L 21.85 -27.40 Q 7.64 -33.48 -7.80 -34.16 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -10.25 -44.92 Q 10.77 -47.17 28.73 -36.03" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M 29.93 -37.53 Q 45.41 -21.87 48.00 -0.00 L 35.04 -0.00 Q 30.94 -14.90 21.85 -27.40 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 28.73 -36.03 Q 43.59 -20.99 46.08 -0.00" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.85"/>
+<path d="M 34.60 9.95 Q 26.24 27.21 8.68 34.94 L 5.67 22.83 Q 16.00 16.59 22.60 6.50 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 33.21 9.55 Q 25.19 26.12 8.34 33.54" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.8"/>
+<path d="M 8.68 34.94 Q -10.45 36.33 -25.91 24.99 L -16.93 16.33 Q -6.37 22.15 5.67 22.83 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 8.34 33.54 Q -10.03 34.87 -24.88 23.99" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.8"/>
+<path d="M -25.91 24.99 Q -36.68 9.12 -34.60 -9.95 L -22.60 -6.50 Q -22.37 5.56 -16.93 16.33 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -24.88 23.99 Q -35.22 8.75 -33.21 -9.55" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.8"/>
+<path d="M -34.60 -9.95 Q -26.24 -27.21 -8.68 -34.94 L -5.67 -22.83 Q -16.00 -16.59 -22.60 -6.50 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -33.21 -9.55 Q -25.19 -26.12 -8.34 -33.54" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.8"/>
+<path d="M -8.68 -34.94 Q 10.45 -36.33 25.91 -24.99 L 16.93 -16.33 Q 6.37 -22.15 -5.67 -22.83 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -8.34 -33.54 Q 10.03 -34.87 24.88 -23.99" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.8"/>
+<path d="M 25.91 -24.99 Q 36.68 -9.12 34.60 9.95 L 22.60 6.50 Q 22.37 -5.56 16.93 -16.33 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 24.88 -23.99 Q 35.22 -8.75 33.21 9.55" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.8"/>
+<path d="M 21.00 12.59 Q 10.07 23.65 -5.48 23.86 L -3.01 13.10 Q 5.16 12.12 11.53 6.91 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 20.16 12.08 Q 9.67 22.70 -5.26 22.90" fill="none" stroke="#ffffff" stroke-width="1.1" opacity="0.75"/>
+<path d="M -5.48 23.86 Q -19.38 16.88 -24.38 2.16 L -13.39 1.19 Q -9.93 8.65 -3.01 13.10 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -5.26 22.90 Q -18.61 16.21 -23.41 2.07" fill="none" stroke="#ffffff" stroke-width="1.1" opacity="0.75"/>
+<path d="M -24.38 2.16 Q -22.05 -13.22 -9.59 -22.52 L -5.26 -12.37 Q -11.30 -6.77 -13.39 1.19 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -23.41 2.07 Q -21.16 -12.69 -9.21 -21.62" fill="none" stroke="#ffffff" stroke-width="1.1" opacity="0.75"/>
+<path d="M -9.59 -22.52 Q 5.76 -25.05 18.46 -16.08 L 10.13 -8.83 Q 2.95 -12.84 -5.26 -12.37 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -9.21 -21.62 Q 5.53 -24.05 17.72 -15.44" fill="none" stroke="#ffffff" stroke-width="1.1" opacity="0.75"/>
+<path d="M 18.46 -16.08 Q 25.60 -2.27 21.00 12.59 L 11.53 6.91 Q 13.12 -1.16 10.13 -8.83 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 17.72 -15.44 Q 24.58 -2.18 20.16 12.08" fill="none" stroke="#ffffff" stroke-width="1.1" opacity="0.75"/>
+<path d="M 13.53 4.94 A 14.40 14.40 0 0 1 -11.09 9.18 Q 0 0 13.53 4.94 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.6"/>
+<path d="M -11.04 9.25 A 14.40 14.40 0 0 1 -2.41 -14.20 Q 0 0 -11.04 9.25 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.6"/>
+<path d="M -2.49 -14.18 A 14.40 14.40 0 0 1 13.50 5.01 Q 0 0 -2.49 -14.18 Z" fill="url(#whiteGrad)" stroke="#294b39" stroke-width="1.6"/>
+<polygon points="0,-11.52 11.52,0 0,0" fill="#e8f7ee" stroke="#294b39" stroke-width="1.3"/>
+<polygon points="0,-11.52 -11.52,0 0,0" fill="#e8f7ee" stroke="#294b39" stroke-width="1.3"/>
+<polygon points="0,0 11.52,0 0,11.52" fill="#97bda8" stroke="#294b39" stroke-width="1.3"/>
+<polygon points="0,0 -11.52,0 0,11.52" fill="#97bda8" stroke="#294b39" stroke-width="1.3"/>
+<circle cx="0" cy="-5.53" r="1.82" fill="#ffffff"/>
+</g>
+</g>
 
-                <!-- Page 3 -->
-                <div id="page-3" class="page">
-                    <div class="letter-content">
-                        <p class="handwriting">Aku berjanji...</p>
-                        <p class="handwriting">Akan memperbaik semuanya. termasuk kepribadianku.</p>
-                        <p class="handwriting">Aku akan mecoba tidak membuatmu marah dan emosi. tidak mematikan api excied mu.</p>
-                        <p class="handwriting">Dan aku akan selalu patuh padamu.</p>
-                    </div>
-                    <button class="btn-next" onclick="nextPage(4)">Next ➜</button>
-                </div>
+                <!-- Rose 4: Center Foremost Rose (Grand Master Bloom) -->
+                <g id="rose_4_center" class="bloom-rose-center" style="transform-origin: 508px 162px;">
+<g transform="translate(508, 162) rotate(0)">
+<circle cx="0" cy="0" r="61.2" fill="#541427" opacity="0.32"/>
+<path d="M 60.00 0.00 Q 56.76 27.33 37.41 46.91 L 27.31 34.24 Q 38.67 18.62 43.80 0.00 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 57.60 0.00 Q 54.49 26.24 35.91 45.03" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 37.41 46.91 Q 14.02 61.42 -13.35 58.50 L -9.75 42.70 Q 9.55 41.85 27.31 34.24 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 35.91 45.03 Q 13.46 58.96 -12.82 56.16" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -13.35 58.50 Q -39.28 49.26 -54.06 26.03 L -39.46 19.00 Q -26.76 33.56 -9.75 42.70 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -12.82 56.16 Q -37.71 47.29 -51.90 24.99" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -54.06 26.03 Q -63.00 0.00 -54.06 -26.03 L -39.46 -19.00 Q -42.92 0.00 -39.46 19.00 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -51.90 24.99 Q -60.48 0.00 -51.90 -24.99" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -54.06 -26.03 Q -39.28 -49.26 -13.35 -58.50 L -9.75 -42.70 Q -26.76 -33.56 -39.46 -19.00 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -51.90 -24.99 Q -37.71 -47.29 -12.82 -56.16" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M -13.35 -58.50 Q 14.02 -61.42 37.41 -46.91 L 27.31 -34.24 Q 9.55 -41.85 -9.75 -42.70 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M -12.82 -56.16 Q 13.46 -58.96 35.91 -45.03" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 37.41 -46.91 Q 56.76 -27.33 60.00 -0.00 L 43.80 -0.00 Q 38.67 -18.62 27.31 -34.24 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M 35.91 -45.03 Q 54.49 -26.24 57.60 -0.00" fill="none" stroke="#ff9ec0" stroke-width="1.3" opacity="0.85"/>
+<path d="M 43.25 12.44 Q 32.80 34.01 10.85 43.67 L 7.09 28.53 Q 20.00 20.74 28.26 8.12 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 41.52 11.94 Q 31.49 32.65 10.42 41.92" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 10.85 43.67 Q -13.06 45.41 -32.39 31.24 L -21.16 20.41 Q -7.96 27.69 7.09 28.53 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 10.42 41.92 Q -12.54 43.59 -31.10 29.99" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -32.39 31.24 Q -45.86 11.40 -43.25 -12.44 L -28.26 -8.12 Q -27.96 6.95 -21.16 20.41 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -31.10 29.99 Q -44.02 10.94 -41.52 -11.94" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -43.25 -12.44 Q -32.80 -34.01 -10.85 -43.67 L -7.09 -28.53 Q -20.00 -20.74 -28.26 -8.12 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -41.52 -11.94 Q -31.49 -32.65 -10.42 -41.92" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M -10.85 -43.67 Q 13.06 -45.41 32.39 -31.24 L 21.16 -20.41 Q 7.96 -27.69 -7.09 -28.53 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M -10.42 -41.92 Q 12.54 -43.59 31.10 -29.99" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 32.39 -31.24 Q 45.86 -11.40 43.25 12.44 L 28.26 8.12 Q 27.96 -6.95 21.16 -20.41 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="2.0" stroke-linejoin="round"/>
+<path d="M 31.10 -29.99 Q 44.02 -10.94 41.52 11.94" fill="none" stroke="#ff9ec0" stroke-width="1.2" opacity="0.8"/>
+<path d="M 26.25 15.73 Q 12.59 29.56 -6.85 29.82 L -3.76 16.37 Q 6.45 15.15 14.41 8.64 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 25.20 15.10 Q 12.08 28.38 -6.58 28.63" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -6.85 29.82 Q -24.23 21.10 -30.48 2.70 L -16.73 1.48 Q -12.41 10.81 -3.76 16.37 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -6.58 28.63 Q -23.26 20.26 -29.26 2.59" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -30.48 2.70 Q -27.56 -16.52 -11.99 -28.15 L -6.58 -15.46 Q -14.12 -8.46 -16.73 1.48 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -29.26 2.59 Q -26.46 -15.86 -11.51 -27.03" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M -11.99 -28.15 Q 7.19 -31.31 23.07 -20.10 L 12.67 -11.04 Q 3.69 -16.05 -6.58 -15.46 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M -11.51 -27.03 Q 6.91 -30.06 22.15 -19.30" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M 23.07 -20.10 Q 32.00 -2.83 26.25 15.73 L 14.41 8.64 Q 16.40 -1.45 12.67 -11.04 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M 22.15 -19.30 Q 30.72 -2.72 25.20 15.10" fill="none" stroke="#ff9ec0" stroke-width="1.1" opacity="0.75"/>
+<path d="M 16.91 6.17 A 18.00 18.00 0 0 1 -13.86 11.48 Q 0 0 16.91 6.17 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.6"/>
+<path d="M -13.80 11.56 A 18.00 18.00 0 0 1 -3.01 -17.75 Q 0 0 -13.80 11.56 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.6"/>
+<path d="M -3.11 -17.73 A 18.00 18.00 0 0 1 16.87 6.27 Q 0 0 -3.11 -17.73 Z" fill="url(#magentaGrad)" stroke="#541427" stroke-width="1.6"/>
+<polygon points="0,-14.40 14.40,0 0,0" fill="#ea6692" stroke="#541427" stroke-width="1.3"/>
+<polygon points="0,-14.40 -14.40,0 0,0" fill="#ea6692" stroke="#541427" stroke-width="1.3"/>
+<polygon points="0,0 14.40,0 0,14.40" fill="#ab2452" stroke="#541427" stroke-width="1.3"/>
+<polygon points="0,0 -14.40,0 0,14.40" fill="#ab2452" stroke="#541427" stroke-width="1.3"/>
+<circle cx="0" cy="-6.91" r="2.28" fill="#ff9ec0"/>
+</g>
+</g>
 
-            </div>
-        </section>
+                <!-- ------------------------------------------------------------
+                     3F. CHALICE WRAPPER FRONT CONE & OVERLAPPING LAPELS
+                     ------------------------------------------------------------ -->
+                <g id="wrapperFrontCone">
+                    <!-- Left Lapel -->
+                    <path d="M 370 230 C 380 280, 420 335, 480 368 L 508 368 L 508 280 C 455 270, 405 250, 370 230 Z"
+                          fill="url(#wrapperFrontGrad)" stroke="#11353a" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M 370 230 C 380 280, 420 335, 480 368 L 508 368 L 508 280 C 455 270, 405 250, 370 230 Z"
+                          fill="url(#goldDamask)" opacity="0.65"/>
+                    <path d="M 370 230 C 405 250, 455 270, 508 280"
+                          fill="none" stroke="#dfb658" stroke-width="4.5" stroke-linecap="round"/>
+                    <path d="M 370 230 C 405 250, 455 270, 508 280"
+                          fill="none" stroke="#fff5bd" stroke-width="1.4" stroke-linecap="round"/>
 
-        <!-- Ending Scene -->
-        <section id="scene-ending" class="scene">
-            <div class="ending-container">
-                <h1 class="ending-title">Dibalas yak sayangku.</h1>
-                
-                <div class="voice-note-wrapper" style="margin: 30px 0;">
-                    <p style="color: white; font-family: var(--font-hand); font-size: 20px; margin-bottom: 10px;">(maaf jika tidak terdengar jelas)</p>
-                    <!-- Ganti 'voice_note.mp3' dengan file suara asli Anda nantinya -->
-                    <audio controls style="border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                        <source src="voice_note.mp3" type="audio/mpeg">
-                        Browser Anda tidak mendukung elemen audio.
-                    </audio>
-                </div>
+                    <!-- Right Lapel -->
+                    <g filter="url(#lapelShadow)">
+                        <path d="M 646 230 C 636 280, 596 335, 536 368 L 506 368 L 508 280 C 561 270, 611 250, 646 230 Z"
+                              fill="url(#wrapperFrontGrad)" stroke="#11353a" stroke-width="2.2" stroke-linejoin="round"/>
+                        <path d="M 646 230 C 636 280, 596 335, 536 368 L 506 368 L 508 280 C 561 270, 611 250, 646 230 Z"
+                              fill="url(#goldDamask)" opacity="0.65"/>
+                        <path d="M 646 230 C 611 250, 561 270, 508 280"
+                              fill="none" stroke="#dfb658" stroke-width="4.5" stroke-linecap="round"/>
+                        <path d="M 646 230 C 611 250, 561 270, 508 280"
+                              fill="none" stroke="#fff5bd" stroke-width="1.4" stroke-linecap="round"/>
+                    </g>
 
-                <p class="ending-text">
-                    Jangan pergi ya sayangku<br>
-                    aku berjanji akan berubah<br><br>
-                    <strong>Maafkan aku, aku mencintaimu</strong>
-                </p>
-                <div class="pulse-heart">❤️</div>
+                    <!-- Flared Bottom Skirt -->
+                    <path d="M 480 368 L 454 422 C 478 434, 538 434, 562 422 L 536 368 Z"
+                          fill="url(#wrapperFrontGrad)" stroke="#11353a" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M 480 368 L 454 422 C 478 434, 538 434, 562 422 L 536 368 Z"
+                          fill="url(#goldDamask)" opacity="0.65"/>
+                    <path d="M 454 422 C 478 434, 538 434, 562 422"
+                          fill="none" stroke="#dfb658" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M 464 412 Q 508 426 552 412"
+                          fill="none" stroke="#dfb658" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+                </g>
 
-                <div class="button-group" id="ending-buttons">
-                    <button class="btn-choice btn-forgive" onclick="chooseEnding('forgive')">🌸 Dimaafin</button>
-                    <button class="btn-choice btn-wait" id="btn-no">🌸 Tidak dimaafin</button>
-                </div>
-                <div id="ending-message" class="ending-message hidden">
-                    <!-- Dynamic message inserted here -->
-                </div>
-            </div>
-        </section>
+                <!-- ------------------------------------------------------------
+                     3G. LUXURY RIBBON BOW & RUBY KNOT
+                     ------------------------------------------------------------ -->
+                <g id="ribbonBow">
+                    <!-- Ruby/Wine Inner Loops -->
+                    <ellipse cx="448" cy="368" rx="14" ry="10" transform="rotate(-15, 448, 368)"
+                             fill="url(#rubyRibbonGrad)" stroke="#520f23" stroke-width="2.2"/>
+                    <ellipse cx="568" cy="368" rx="14" ry="10" transform="rotate(15, 568, 368)"
+                             fill="url(#rubyRibbonGrad)" stroke="#520f23" stroke-width="2.2"/>
 
-        <!-- White Flash Transition Overlay -->
-        <div id="flash-overlay"></div>
+                    <!-- Ruby/Wine Ribbon Tails -->
+                    <path d="M 498 380 L 468 448 L 478 440 L 490 454 L 508 380 Z"
+                          fill="url(#rubyRibbonGrad)" stroke="#520f23" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M 518 380 L 548 448 L 538 440 L 526 454 L 508 380 Z"
+                          fill="url(#rubyRibbonGrad)" stroke="#520f23" stroke-width="2.2" stroke-linejoin="round"/>
 
-    </main>
+                    <!-- Golden Ribbon Tails -->
+                    <path d="M 492 380 L 442 432 L 454 428 L 460 440 L 504 380 Z"
+                          fill="url(#goldRibbonGrad)" stroke="#6e460a" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M 496 380 L 454 428" fill="none" stroke="#fff9d6" stroke-width="1.3"/>
 
-    <script src="script.js"></script>
+                    <path d="M 524 380 L 574 432 L 562 428 L 556 440 L 512 380 Z"
+                          fill="url(#goldRibbonGrad)" stroke="#6e460a" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M 520 380 L 562 428" fill="none" stroke="#fff9d6" stroke-width="1.3"/>
+
+                    <!-- 4 Golden Loops -->
+                    <path d="M 504 372 C 485 336, 442 330, 446 355 C 448 374, 485 376, 504 372 Z"
+                          fill="url(#goldRibbonGrad)" stroke="#6e460a" stroke-width="2.4" stroke-linejoin="round"/>
+                    <path d="M 498 370 C 480 342, 452 338, 452 355" fill="none" stroke="#fff9d6" stroke-width="1.5"/>
+
+                    <path d="M 512 372 C 531 336, 574 330, 570 355 C 568 374, 531 376, 512 372 Z"
+                          fill="url(#goldRibbonGrad)" stroke="#6e460a" stroke-width="2.4" stroke-linejoin="round"/>
+                    <path d="M 518 370 C 536 342, 564 338, 564 355" fill="none" stroke="#fff9d6" stroke-width="1.5"/>
+
+                    <path d="M 504 374 C 482 380, 452 378, 454 398 C 456 412, 488 404, 504 378 Z"
+                          fill="url(#goldRibbonGrad)" stroke="#6e460a" stroke-width="2.4" stroke-linejoin="round"/>
+                    <path d="M 500 376 C 482 386, 460 390, 460 399" fill="none" stroke="#fff9d6" stroke-width="1.4"/>
+
+                    <path d="M 512 374 C 534 380, 564 378, 562 398 C 560 412, 528 404, 512 378 Z"
+                          fill="url(#goldRibbonGrad)" stroke="#6e460a" stroke-width="2.4" stroke-linejoin="round"/>
+                    <path d="M 516 376 C 534 386, 556 390, 556 399" fill="none" stroke="#fff9d6" stroke-width="1.4"/>
+
+                    <!-- Center Ruby Gem Knot -->
+                    <rect x="494" y="363" width="28" height="26" rx="7" ry="7"
+                          fill="url(#rubyGemGrad)" stroke="#ebba42" stroke-width="3.5"/>
+                    <rect x="496" y="365" width="24" height="22" rx="5" ry="5"
+                          fill="none" stroke="#630c27" stroke-width="1.2"/>
+                    <ellipse cx="501" cy="369" rx="3.5" ry="2.0" transform="rotate(-25, 501, 369)" fill="#ffffff" opacity="0.85"/>
+                </g>
+
+            </g> <!-- END interactiveBouquet -->
+
+            <!-- ====================================================================
+                 LAYER 4: ROMANTIC TYPOGRAPHY
+                 ==================================================================== -->
+            <g id="posterTypography">
+                <text id="textLine1" x="508" y="490" text-anchor="middle"
+                      font-family="'Montserrat', 'Segoe UI', -apple-system, sans-serif"
+                      font-size="24" font-weight="900" fill="#0d2440" letter-spacing="6">UNTUK MU <tspan font-weight="700" fill="#b32454" letter-spacing="7">SAYANGKU</tspan></text>
+
+                <text id="textLine2" x="508" y="518" text-anchor="middle"
+                      font-family="'Montserrat', 'Segoe UI', -apple-system, sans-serif"
+                      font-size="13.5" font-weight="600" fill="#b32454" letter-spacing="10">♥ ♥ ♥</text>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<!-- ==========================================================================
+     INTERACTIVE JAVASCRIPT: INTRO REPLAY, 3D PARALLAX, BOUNCE & PARTICLES
+     ========================================================================== -->
+<script>
+(function() {
+    const stage = document.getElementById('stageContainer');
+    const wrapper = document.getElementById('artworkWrapper');
+    const bouquet = document.getElementById('interactiveBouquet');
+    const replayBtn = document.getElementById('replayBtn');
+
+    // Replay Intro Handler
+    function replayIntro() {
+        stage.classList.remove('play-intro');
+        void stage.offsetWidth; // Force DOM reflow to re-trigger animations
+        stage.classList.add('play-intro');
+
+        // Burst celebration sparkle on intro completion
+        setTimeout(() => {
+            const rect = wrapper.getBoundingClientRect();
+            const cx = rect.left + rect.width * 0.496;
+            const cy = rect.top + rect.height * 0.29;
+            for (let i = 0; i < 24; i++) {
+                createSparkle(cx, cy);
+            }
+        }, 1100);
+    }
+
+    replayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        replayIntro();
+    });
+
+    // Keyboard shortcut (R or Space to replay)
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'r' || e.key === 'R' || e.code === 'Space') {
+            if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                replayIntro();
+            }
+        }
+    });
+
+    // Trigger initial celebration sparkle when Rose 4 finishes blooming
+    setTimeout(() => {
+        const rect = wrapper.getBoundingClientRect();
+        const cx = rect.left + rect.width * 0.496;
+        const cy = rect.top + rect.height * 0.29;
+        for (let i = 0; i < 20; i++) {
+            createSparkle(cx, cy);
+        }
+    }, 1100);
+
+    // 1. Responsive Scale for Mobile (Android & iPhone) and Desktop
+    function getResponsiveScale() {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const ratio = w / h;
+        if (ratio < 0.62) {
+            // Typical smartphone portrait (iPhone, Android)
+            return 1.84;
+        } else if (ratio < 0.85) {
+            // Wider phone or small tablet portrait
+            return 1.55;
+        } else if (ratio < 1.05) {
+            // iPad / Tablet
+            return 1.30;
+        } else if (h < 540) {
+            // Landscape mobile phone
+            return Math.min(1.0, (h * 0.86) / 559);
+        }
+        return 1.0;
+    }
+
+    let baseScale = getResponsiveScale();
+    window.addEventListener('resize', () => {
+        baseScale = getResponsiveScale();
+    });
+
+    // 2. 3D Parallax with Lerp (Mouse, Touch & Gyroscope)
+    let targetRotX = 0, targetRotY = 0;
+    let currentRotX = 0, currentRotY = 0;
+    let isTouching = false;
+    let hasGyro = false;
+
+    // Desktop Mouse
+    window.addEventListener('mousemove', (e) => {
+        if (isTouching) return;
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
+
+        targetRotY = dx * 8.5;
+        targetRotX = -dy * 7.0;
+    });
+
+    // Mobile Touch Drag Parallax (Android & iPhone)
+    window.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            isTouching = true;
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (isTouching && e.touches.length === 1) {
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            const dx = (e.touches[0].clientX - cx) / cx;
+            const dy = (e.touches[0].clientY - cy) / cy;
+
+            targetRotY = dx * 11.0;
+            targetRotX = -dy * 9.0;
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+        isTouching = false;
+        if (!hasGyro) {
+            targetRotX = 0;
+            targetRotY = 0;
+        }
+    }, { passive: true });
+
+    // Mobile Gyroscope / Device Orientation (Android & iPhone)
+    if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', (e) => {
+            if (e.gamma !== null && e.beta !== null && !isTouching) {
+                hasGyro = true;
+                const gamma = Math.max(-28, Math.min(28, e.gamma));
+                const beta = Math.max(15, Math.min(65, e.beta)) - 40;
+
+                targetRotY = (gamma / 28) * 9.0;
+                targetRotX = -(beta / 25) * 7.5;
+            }
+        }, { passive: true });
+    }
+
+    function updateParallax() {
+        currentRotX += (targetRotX - currentRotX) * 0.08;
+        currentRotY += (targetRotY - currentRotY) * 0.08;
+
+        wrapper.style.transform = `scale(${baseScale}) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg)`;
+        requestAnimationFrame(updateParallax);
+    }
+    updateParallax();
+
+    // 3. Elastic Bounce & Magical Particles (Mouse Click & Touch Tap)
+    let lastTap = 0;
+    function triggerBounceInteraction(clientX, clientY) {
+        const now = Date.now();
+        if (now - lastTap < 320) return;
+        lastTap = now;
+
+        bouquet.classList.remove('bounce-click');
+        void bouquet.offsetWidth;
+        bouquet.classList.add('bounce-click');
+
+        for (let i = 0; i < 18; i++) {
+            createSparkle(clientX, clientY);
+        }
+    }
+
+    bouquet.addEventListener('click', (e) => {
+        const rect = wrapper.getBoundingClientRect();
+        triggerBounceInteraction(e.clientX || (rect.left + rect.width / 2), e.clientY || (rect.top + rect.height * 0.4));
+    });
+
+    bouquet.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            triggerBounceInteraction(e.touches[0].clientX, e.touches[0].clientY);
+        }
+    }, { passive: true });
+
+    function createSparkle(x, y) {
+        const p = document.createElement('div');
+        p.className = 'particle-sparkle';
+        const size = Math.random() * 9 + 4;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = (x - size / 2) + 'px';
+        p.style.top = (y - size / 2) + 'px';
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 90 + 35;
+        const dx = Math.cos(angle) * speed;
+        const dy = Math.sin(angle) * speed - 45;
+
+        p.style.setProperty('--p-dx', dx + 'px');
+        p.style.setProperty('--p-dy', dy + 'px');
+
+        document.body.appendChild(p);
+        setTimeout(() => {
+            p.remove();
+        }, 1400);
+    }
+})();
+</script>
+
 </body>
 </html>

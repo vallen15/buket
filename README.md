@@ -1,2 +1,0 @@
-# maaf
-untuk sayangku
